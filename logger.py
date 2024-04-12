@@ -1,6 +1,7 @@
 import serial
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
+import pandas as pd
 import threading
 import signal
 from voltage_reader import VoltageReader
@@ -19,34 +20,41 @@ def plot_animation(i, v_data: VoltageReader, lines_data, axs):
 
 
 def int_handler(s,t):
+    # print(s, t)
     print('Stopping')
     VoltageReader.stop_reading.set()
+    reading_thread.join()
     plt.close()
 
 if __name__ == '__main__':
-    plots = 2
+    
+    plots = 3
 
     arduino = serial.Serial(port='COM3', baudrate=9600, timeout=1)
     fig, axs = plt.subplots(2, 1)
-    lines_data = [axs[i].plot([], [])[0] for i in range(plots)]
+    # lines_data = [axs[i].plot([], [])[0] for i in range(plots)]
 
     v_data = VoltageReader(arduino, plots)
+
     reading_thread = threading.Thread(target=v_data.read_voltages)
     reading_thread.start()
 
     signal.signal(signal.SIGINT, int_handler)
+    # reading_thread.join()
 
-    fig.suptitle('Voltage Measurements')
-    frame_count = 0
+    # fig.suptitle('Voltage Measurements')
+    # frame_count = 0
 
-    plot_ani = animation.FuncAnimation(
-        fig, 
-        plot_animation,
-        fargs=[v_data, lines_data, axs], 
-        interval=1000, 
-        save_count=frame_count, 
-        cache_frame_data=True
-    )
-    
-    plt.show()
-
+    # plot_ani = animation.FuncAnimation(
+    #     fig, 
+    #     plot_animation,
+    #     fargs=[v_data, lines_data, axs], 
+    #     interval=1000, 
+    #     save_count=frame_count, 
+    #     cache_frame_data=True
+    # )
+    # plt.plot([1], [2])
+    # plt.show()
+    while not VoltageReader.stop_reading.is_set():
+        pass
+        
