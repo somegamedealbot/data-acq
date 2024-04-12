@@ -6,7 +6,9 @@ class Recording:
 
     def __init__(self, cols) -> None:
         # remove newline when deployed
-        self.csv = open(f'{time.time()}-readings.csv', mode='w', newline='')
+        # os.path.dirname(os.path.abspath(__file__))
+        dir_path = os.path.dirname(os.path.abspath(__file__))
+        self.csv = open(dir_path + f'/logs/{time.time()}-readings.csv', mode='w', newline='')
         self.csv_writer = csv.writer(self.csv)
         self.cols = cols
         self.setup_csv()

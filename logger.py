@@ -1,10 +1,13 @@
 import serial
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
-import pandas as pd
+# import pandas as pd
 import threading
 import signal
 from voltage_reader import VoltageReader
+
+PI_PORT = '/dev/ttyACM0'
+WINDOWS_PORT = 'COM3'
 
 def update_plot(readings, lines_data, axs):
     print(readings)
@@ -30,8 +33,8 @@ if __name__ == '__main__':
     
     plots = 3
 
-    arduino = serial.Serial(port='COM3', baudrate=9600, timeout=1)
-    fig, axs = plt.subplots(2, 1)
+    arduino = serial.Serial(port=PI_PORT, baudrate=9600, timeout=1)
+    # fig, axs = plt.subplots(2, 1)
     # lines_data = [axs[i].plot([], [])[0] for i in range(plots)]
 
     v_data = VoltageReader(arduino, plots)

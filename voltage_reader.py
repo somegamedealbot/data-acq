@@ -81,7 +81,7 @@ class VoltageReader:
         arduino = self.arduino
 
         while not VoltageReader.stop_reading.is_set(): 
-            
+            arduino.reset_output_buffer()
             read_lines = []
             while (len(read_lines) < 3):
                 line = arduino.readline()
