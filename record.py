@@ -28,6 +28,7 @@ class Recording:
             row.append(v)
             row.append(c)
 
+        # Flushes data out to file immediately
         self.csv_writer.writerow(row)
         self.csv.flush()
         os.fsync(self.csv)
