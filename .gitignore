@@ -1,1 +1,4 @@
 todo
+pandastest.py
+__pycache__
+*.csv
